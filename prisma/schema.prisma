@@ -6,3 +6,88 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  GOD
+  ADMIN
+  MEMBER
+}
+
+enum Challenge {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model User {
+  id           String         @id @default(cuid())
+  groupId      String
+  group        Group?         @relation("UserGroup", fields: [groupId], references: [id])
+  email        String         @unique
+  role         Role
+  password     String
+  isActive     Boolean        @default(false)
+  UserData     UserData[]
+  UserBadge    UserBadge[]
+  GroupMembers GroupMembers[]
+}
+
+model UserData {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  phone     String?
+  discord   String?
+  country   String?
+  score     Float?
+  techStack String[]
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String
+  imageUrl    String
+  score       Float
+  description String
+  UserBadge   UserBadge[]
+}
+
+model UserBadge {
+  id      Int    @id @default(autoincrement())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  badgeId String
+  badge   Badge  @relation(fields: [badgeId], references: [id])
+
+  @@unique([userId, badgeId])
+}
+
+model Project {
+  id           String    @id @default(cuid())
+  name         String
+  description  String
+  challenge    Challenge
+  imageUrl     String
+  requirements String[]
+  Group        Group[]
+}
+
+model Group {
+  id           String         @id @default(cuid())
+  projectId    String?
+  project      Project?       @relation(fields: [projectId], references: [id])
+  name         String
+  projectEnds  DateTime?
+  User         User[]         @relation("UserGroup")
+  GroupMembers GroupMembers[]
+}
+
+model GroupMembers {
+  id      Int    @id @default(autoincrement())
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([groupId, userId])
+}
