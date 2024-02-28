@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { UserEntity } from '../../../domain/entities/user.entity';
-import { UpdateUserDTO } from '../../../domain/dtos/update-user.dto';
+import { UpdateUserDTO } from '../../../domain/dtos/users/update-user.dto';
 import { UserRepository } from '../../../domain/repositories/user.repository';
 
 const prisma = new PrismaClient();
