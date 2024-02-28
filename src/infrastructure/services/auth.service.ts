@@ -1,8 +1,6 @@
-import { CustomError } from '../../../common/utils/errors';
-import { Password } from '../../../common/utils/password';
 import { CreateUserDTO, LoginUserDTO } from '../../domain/dtos';
-import { AuthRepository } from '../../domain/repositories/auth.repository';
-import { UserRepository } from '../../domain/repositories/user.repository';
+import { AuthRepository, UserRepository } from '../../domain/repositories';
+import { CustomError, Password } from '../../presentation/utils';
 
 export class AuthService {
   constructor(
