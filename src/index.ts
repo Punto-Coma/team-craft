@@ -1,6 +1,6 @@
-import { envs } from './common/config/envs';
-import { AppRoutes } from './common/routes';
-import { Server } from './common/utils/server';
+import { envs } from './config/envs';
+import { AppRoutes } from './presentation/routes';
+import { Server } from './presentation/utils';
 
 (async () => {
   main();

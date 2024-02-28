@@ -2,4 +2,3 @@ node_modules
 .env
 postgres
 coverage
-.prettierrc

@@ -2,7 +2,7 @@ import { genSalt, hash, compare } from 'bcryptjs';
 import { sign, verify } from 'jsonwebtoken';
 
 import { ITokenPayload } from '../interfaces/token-payload.interface';
-import { envs } from '../config/envs';
+import { envs } from '../../config/envs';
 
 export class Password {
   private static async GetSalt(): Promise<string> {

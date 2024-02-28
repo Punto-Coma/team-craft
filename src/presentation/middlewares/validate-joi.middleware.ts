@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
-import { ErrorResponse } from '../../../common/utils/response';
+import { ErrorResponse } from '../utils';
 
 interface DTO {
   [key: string]: unknown;

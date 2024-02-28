@@ -14,7 +14,7 @@ export class PrismaAuthRepository implements AuthRepository {
   async Create(user: CreateUserDTO): Promise<UserEntity | void> {
     const { username, email, password } = user;
 
-    const createdUser = await prisma.user.create({
+    return await prisma.user.create({
       data: {
         username,
         email,
@@ -22,7 +22,5 @@ export class PrismaAuthRepository implements AuthRepository {
         password,
       },
     });
-
-    return createdUser;
   }
 }
