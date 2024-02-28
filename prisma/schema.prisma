@@ -30,7 +30,9 @@ model User {
   isActive     Boolean        @default(false)
   UserData     UserData[]
   UserBadge    UserBadge[]
+  UserProject  UserProject[]
   GroupMembers GroupMembers[]
+  Project      Project[]
 }
 
 model UserData {
@@ -64,13 +66,26 @@ model UserBadge {
 }
 
 model Project {
-  id           String    @id @default(cuid())
+  id           String        @id @default(cuid())
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
   name         String
   description  String
   challenge    Challenge
   imageUrl     String
   requirements String[]
   Group        Group[]
+  UserProject  UserProject[]
+}
+
+model UserProject {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, projectId])
 }
 
 model Group {
