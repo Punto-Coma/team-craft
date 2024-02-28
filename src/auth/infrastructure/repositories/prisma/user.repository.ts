@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { UserEntity } from '../../../domain/entities/user.entity';
 import { UpdateUserDTO } from '../../../domain/dtos/update-user.dto';
+import { UserRepository } from '../../../domain/repositories/user.repository';
 
 const prisma = new PrismaClient();
 
-export class PrismaUserRepository {
+export class PrismaUserRepository implements UserRepository {
   async Get(limit: number = 10, page: number = 1): Promise<UserEntity[] | null> {
     const offset = (page - 1) * limit;
 

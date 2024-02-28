@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { CreateUserDTO } from '../domain/dtos/create-user.dto';
 import { ErrorResponse, SuccessResponse } from '../../common/utils/response';
 import { CustomError } from '../../common/utils/errors';
 import { AuthService } from '../infrastructure/services/auth.service';
+import { CreateUserDTO, LoginUserDTO } from '../domain/dtos';
 
 export class AuthController {
   constructor(public readonly authService: AuthService) {}
@@ -12,6 +12,15 @@ export class AuthController {
 
     this.authService
       .Create(input)
+      .then((data) => SuccessResponse(res, 201, data))
+      .catch((error: Error | CustomError) => this.HandleError(error, res));
+  }
+
+  public LoginUser(req: Request<object, object, LoginUserDTO>, res: Response) {
+    const input = req.body;
+
+    this.authService
+      .Login(input)
       .then((data) => SuccessResponse(res, 201, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
