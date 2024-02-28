@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import { ErrorResponse, SuccessResponse } from '../../common/utils/response';
-import { CustomError } from '../../common/utils/errors';
-import { AuthService } from '../infrastructure/services/auth.service';
-import { CreateUserDTO, LoginUserDTO } from '../domain/dtos';
+import { CustomError, ErrorResponse, SuccessResponse } from '../utils';
+import { AuthService } from '../../infrastructure/services';
+import { CreateUserDTO, LoginUserDTO } from '../../domain/dtos';
 
 export class AuthController {
   constructor(public readonly authService: AuthService) {}

@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { AuthController } from './controller';
-import { AuthService } from '../infrastructure/services/auth.service';
-import { PrismaAuthRepository } from '../infrastructure/repositories/prisma/auth.repository';
-
-import { validateInputData } from './middlewares/validate-joi.middleware';
-import { createUserSchema } from '../domain/validators/create-user.schema';
-import { PrismaUserRepository } from '../infrastructure/repositories/prisma/user.repository';
-import { loginUserSchema } from '../domain/validators';
+import { AuthController } from '../controllers/auth.controller';
+import { AuthService } from '../../infrastructure/services';
+import { validateInputData } from '../middlewares/validate-joi.middleware';
+import { createUserSchema, loginUserSchema } from '../../domain/validators';
+import {
+  PrismaAuthRepository,
+  PrismaUserRepository,
+} from '../../infrastructure/repositories/prisma';
 
 export class AuthRoutes {
   static get routes(): Router {
