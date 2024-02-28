@@ -7,7 +7,12 @@ export class ProjectService {
 
   public async Create(input: CreateProjectDTO) {
     try {
-      console.log(input);
+      const data = await this.projectRepository.Create({
+        ...input,
+      });
+      if (!data) return CustomError.NotFound('Couldnt create project, please try again.');
+
+      return { data };
     } catch (error) {
       throw CustomError.InternalServer('Couldnt create project, please try again.');
     }

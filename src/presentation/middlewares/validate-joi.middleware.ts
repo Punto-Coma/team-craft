@@ -19,6 +19,6 @@ export function validateInputData<T extends DTO>(schema: Joi.ObjectSchema<T>) {
       return ErrorResponse(res, 400, errorMessages);
     }
 
-    next();
+    return next();
   };
 }

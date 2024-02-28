@@ -1,7 +1,7 @@
 import { Challenge } from '@prisma/client';
 
 export interface ProjectEntity {
-  id: string;
+  id?: string;
   userId: string;
   name: string;
   description: string;

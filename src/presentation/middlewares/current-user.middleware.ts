@@ -15,14 +15,13 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
   try {
     if (!req.headers.authorization) {
       req.currentUser = null;
-      next();
+      return next();
     }
     const payload = Password.VerifyToken(req.headers.authorization!) as ITokenPayload;
 
     req.currentUser = payload;
+    return next();
   } catch (err) {
-    next(err);
+    return next(err);
   }
-
-  next();
 };
