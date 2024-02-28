@@ -21,8 +21,9 @@ enum Challenge {
 
 model User {
   id           String         @id @default(cuid())
-  groupId      String
+  groupId      String?
   group        Group?         @relation("UserGroup", fields: [groupId], references: [id])
+  username     String         @unique
   email        String         @unique
   role         Role
   password     String
