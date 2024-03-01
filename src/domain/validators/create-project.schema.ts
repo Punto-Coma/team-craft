@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const createProjectSchema = Joi.object({
+export const projectSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().required(),
   challenge: Joi.string().valid('EASY', 'MEDIUM', 'HARD').required(),

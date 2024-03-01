@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CustomError, ErrorResponse, SuccessResponse } from '../utils';
 import { ProjectService } from '../../infrastructure/services';
-import { CreateProjectDTO } from '../../domain/dtos';
+import { CreateProjectDTO, UpdateProjectDTO } from '../../domain/dtos';
 
 export class ProjectController {
   constructor(public readonly projectService: ProjectService) {}
@@ -24,7 +24,7 @@ export class ProjectController {
 
     this.projectService
       .Get(userId)
-      .then((data) => SuccessResponse(res, 201, data))
+      .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
@@ -33,7 +33,20 @@ export class ProjectController {
 
     this.projectService
       .GetSingle(userId, req.params.projectId)
-      .then((data) => SuccessResponse(res, 201, data))
+      .then((data) => SuccessResponse(res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(error, res));
+  }
+
+  public async UpdateProject(
+    req: Request<{ projectId: string }, object, UpdateProjectDTO>,
+    res: Response
+  ) {
+    const input = req.body;
+    const userId = req.currentUser!.id;
+
+    this.projectService
+      .Update(userId, req.params.projectId, input)
+      .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
@@ -42,12 +55,13 @@ export class ProjectController {
 
     this.projectService
       .Delete(userId, req.params.projectId)
-      .then((data) => SuccessResponse(res, 201, data))
+      .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
   private HandleError(error: Error | CustomError, res: Response) {
-    if (error instanceof CustomError) ErrorResponse(res, error.statusCode, error.message);
+    console.log(error);
+    if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
 
     console.log(`${error}`);
     return ErrorResponse(res, 500, { message: 'Internal server error' });
