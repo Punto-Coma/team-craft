@@ -1,45 +1,30 @@
 import { PrismaClient } from '@prisma/client';
-import { ProjectEntity } from '../../../domain/entities/project.entity';
-import { ProjectRepository } from '../../../domain/repositories/project.repository';
-
-import { CreateProjectDTO, UpdateProjectDTO } from '../../../domain/dtos';
+import { CreateGroupDTO, UpdateGroupDTO } from '../../../domain/dtos';
+import { GroupRepository } from '../../../domain/repositories';
+import { GroupEntity } from '../../../domain/entities/group.entity';
 
 const prisma = new PrismaClient();
 
-export class PrismaGroupRepository implements ProjectRepository {
-  async Create(data: CreateProjectDTO): Promise<ProjectEntity | null> {
-    return await prisma.project.create({
+export class PrismaGroupRepository implements GroupRepository {
+  async Create(data: CreateGroupDTO): Promise<GroupEntity | null> {
+    return await prisma.group.create({
       data,
     });
   }
 
-  async Get(userId: string): Promise<ProjectEntity[] | null> {
-    return prisma.project.findMany({
-      orderBy: { id: 'asc' },
-      where: { userId },
-    });
+  Get(id: string): Promise<GroupEntity[] | null> {
+    throw new Error('Method not implemented.');
   }
 
-  async GetById(userId: string, projectId: string): Promise<ProjectEntity | null> {
-    return prisma.project.findUnique({
-      where: { userId, id: projectId },
-    });
+  GetById(userId: string, projectId: string): Promise<GroupEntity | null> {
+    throw new Error('Method not implemented.');
   }
 
-  async Update(
-    userId: string,
-    projectId: string,
-    data: UpdateProjectDTO
-  ): Promise<ProjectEntity | null> {
-    return prisma.project.update({
-      where: { userId, id: projectId },
-      data,
-    });
+  Update(userId: string, projectId: string, data: UpdateGroupDTO): Promise<GroupEntity | null> {
+    throw new Error('Method not implemented.');
   }
 
-  async Delete(userId: string, projectId: string): Promise<ProjectEntity | null> {
-    return await prisma.project.delete({
-      where: { userId, id: projectId },
-    });
+  Delete(userId: string, projectId: string): Promise<GroupEntity | null> {
+    throw new Error('Method not implemented.');
   }
 }

@@ -1,61 +1,15 @@
 import { Request, Response } from 'express';
 import { CustomError, ErrorResponse, SuccessResponse } from '../utils';
-import { ProjectService } from '../../infrastructure/services';
-import { CreateProjectDTO, UpdateProjectDTO } from '../../domain/dtos';
+import { GroupService } from '../../infrastructure/services';
+import { CreateGroupDTO } from '../../domain/dtos';
 
 export class GroupController {
-  constructor(public readonly projectService: ProjectService) {}
+  constructor(public readonly groupService: GroupService) {}
 
-  public async CreateProject(
-    req: Request<{ id: string }, object, CreateProjectDTO>,
-    res: Response
-  ) {
-    const input = req.body;
-    const userId = req.params.id;
-
-    this.projectService
-      .Create({ ...input, userId })
+  public async CreateGroup(req: Request<object, object, CreateGroupDTO>, res: Response) {
+    this.groupService
+      .Create(req.body)
       .then((data) => SuccessResponse(res, 201, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
-  }
-
-  public async GetProjects(req: Request<object, object, object>, res: Response) {
-    const userId = req.currentUser!.id;
-
-    this.projectService
-      .Get(userId)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
-  }
-
-  public async GetProject(req: Request<{ projectId: string }, object, object>, res: Response) {
-    const userId = req.currentUser!.id;
-
-    this.projectService
-      .GetSingle(userId, req.params.projectId)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
-  }
-
-  public async UpdateProject(
-    req: Request<{ projectId: string }, object, UpdateProjectDTO>,
-    res: Response
-  ) {
-    const input = req.body;
-    const userId = req.currentUser!.id;
-
-    this.projectService
-      .Update(userId, req.params.projectId, input)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
-  }
-
-  public async DeleteProject(req: Request<{ projectId: string }, object, object>, res: Response) {
-    const userId = req.currentUser!.id;
-
-    this.projectService
-      .Delete(userId, req.params.projectId)
-      .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 

@@ -90,8 +90,8 @@ model UserProject {
 
 model Group {
   id           String         @id @default(cuid())
-  projectId    String?
-  project      Project?       @relation(fields: [projectId], references: [id])
+  projectId    String
+  project      Project        @relation(fields: [projectId], references: [id])
   name         String
   projectEnds  DateTime?
   User         User[]         @relation("UserGroup")
