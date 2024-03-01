@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 export class PrismaUserRepository implements UserRepository {
   async Get(limit: number = 10, page: number = 1): Promise<UserEntity[] | null> {
     const offset = (page - 1) * limit;
-
     return prisma.user.findMany({
       take: limit,
       skip: offset,
