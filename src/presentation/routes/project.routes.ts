@@ -2,9 +2,8 @@ import { Router } from 'express';
 import { ProjectService } from '../../infrastructure/services';
 import { PrismaProjectRepository } from '../../infrastructure/repositories/prisma';
 import { ProjectController } from '../controllers/project.controller';
-import { validateInputData } from '../middlewares/validate-joi.middleware';
+import { requireAuth, validateInputData } from '../middlewares';
 import { createProjectSchema } from '../../domain/validators';
-import { requireAuth } from '../middlewares/require-auth.middleware';
 
 export class ProjectRoutes {
   static get routes(): Router {
@@ -18,6 +17,13 @@ export class ProjectRoutes {
       [requireAuth, validateInputData(createProjectSchema)],
       controller.CreateProject.bind(controller)
     );
+
+    router.get('/', requireAuth, controller.GetProjects.bind(controller));
+    router.get('/:projectId', requireAuth, controller.GetProject.bind(controller));
+
+    router.put('/:projectId', requireAuth, controller.GetProject.bind(controller));
+
+    router.delete('/:projectId', requireAuth, controller.GetProject.bind(controller));
 
     return router;
   }

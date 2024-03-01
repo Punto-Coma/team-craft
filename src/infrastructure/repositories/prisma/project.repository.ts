@@ -20,9 +20,9 @@ export class PrismaProjectRepository implements ProjectRepository {
     });
   }
 
-  async GetById(id: string): Promise<ProjectEntity | null> {
+  async GetById(userId: string, projectId: string): Promise<ProjectEntity | null> {
     return prisma.project.findUnique({
-      where: { id },
+      where: { userId, id: projectId },
     });
   }
 
@@ -33,9 +33,9 @@ export class PrismaProjectRepository implements ProjectRepository {
     });
   }
 
-  async Delete(id: string): Promise<ProjectEntity | null> {
+  async Delete(userId: string, projectId: string): Promise<ProjectEntity | null> {
     return prisma.project.delete({
-      where: { id },
+      where: { userId, id: projectId },
     });
   }
 }
