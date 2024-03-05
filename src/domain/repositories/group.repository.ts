@@ -6,7 +6,8 @@ import { UserEntity } from '../entities/user.entity';
 export abstract class GroupRepository {
   abstract Create(data: CreateGroupDTO): Promise<GroupEntity | null>;
   abstract Get(limit: number, page: number): Promise<GroupEntity[] | null>;
-  abstract GetById(userId: string, groupId: string): Promise<GroupEntity | null>;
+  abstract GetById(groupId: string): Promise<GroupEntity | null>;
+  abstract CheckMemberGroup(userId: string, groupId: string): Promise<GroupMembersEntity | null>;
   abstract Add(userId: string, groupId: string): Promise<[GroupMembersEntity, UserEntity]>;
   abstract Update(
     userId: string,

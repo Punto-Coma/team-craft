@@ -34,6 +34,15 @@ export class GroupController {
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
+  public async GetGroup(req: Request<{ groupId: string }, object, object>, res: Response) {
+    const userId = req.currentUser!.id;
+
+    this.groupService
+      .GetSingle(userId, req.params.groupId)
+      .then((data) => SuccessResponse(res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(error, res));
+  }
+
   private HandleError(error: Error | CustomError, res: Response) {
     if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
 

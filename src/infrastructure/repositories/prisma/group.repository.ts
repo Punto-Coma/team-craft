@@ -43,10 +43,18 @@ export class PrismaGroupRepository implements GroupRepository {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  GetById(userId: string, projectId: string): Promise<GroupEntity | null> {
-    throw new Error('Method not implemented.');
+  async GetById(groupId: string): Promise<GroupEntity | null> {
+    return prisma.group.findUnique({
+      where: { id: groupId },
+    });
   }
+
+  async CheckMemberGroup(userId: string, groupId: string): Promise<GroupMembersEntity | null> {
+    return prisma.groupMembers.findFirst({
+      where: { userId, groupId },
+    });
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Update(userId: string, projectId: string, data: UpdateGroupDTO): Promise<GroupEntity | null> {
     throw new Error('Method not implemented.');

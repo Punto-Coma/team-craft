@@ -16,6 +16,7 @@ export class GroupRoutes {
     router.post('/add/:groupId', requireAuth, controller.AddMember.bind(controller));
 
     router.get('/', requireAuth, controller.GetGroups.bind(controller));
+    router.get('/:groupId', requireAuth, controller.GetGroup.bind(controller));
 
     return router;
   }
