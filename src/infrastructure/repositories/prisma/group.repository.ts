@@ -12,8 +12,32 @@ export class PrismaGroupRepository implements GroupRepository {
     });
   }
 
-  Get(id: string): Promise<GroupEntity[] | null> {
-    throw new Error('Method not implemented.');
+  async Add(groupId: string, userId: string) {
+    return await prisma
+      .$transaction([
+        prisma.groupMembers.create({
+          data: {
+            userId,
+            groupId,
+          },
+        }),
+        prisma.user.update({
+          where: { id: userId },
+          data: {
+            groupId,
+          },
+        }),
+      ])
+      .finally(async () => await prisma.$disconnect());
+  }
+
+  async Get(limit: number = 10, page: number = 1): Promise<GroupEntity[] | null> {
+    const offset = (page - 1) * limit;
+    return prisma.group.findMany({
+      take: limit,
+      skip: offset,
+      orderBy: { id: 'asc' },
+    });
   }
 
   GetById(userId: string, projectId: string): Promise<GroupEntity | null> {

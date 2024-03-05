@@ -60,7 +60,6 @@ export class ProjectController {
   }
 
   private HandleError(error: Error | CustomError, res: Response) {
-    console.log(error);
     if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
 
     console.log(`${error}`);

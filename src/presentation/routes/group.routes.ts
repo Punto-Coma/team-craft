@@ -3,6 +3,7 @@ import { GroupService } from '../../infrastructure/services';
 import { PrismaGroupRepository } from '../../infrastructure/repositories/prisma';
 
 import { GroupController } from '../controllers/group.controller';
+import { requireAuth } from '../middlewares';
 
 export class GroupRoutes {
   static get routes(): Router {
@@ -11,7 +12,10 @@ export class GroupRoutes {
     const service = new GroupService(new PrismaGroupRepository());
     const controller = new GroupController(service);
 
-    router.post('/', controller.CreateGroup.bind(controller));
+    router.post('/', requireAuth, controller.CreateGroup.bind(controller));
+    router.post('/add/:groupId', requireAuth, controller.AddMember.bind(controller));
+
+    router.get('/', requireAuth, controller.GetGroups.bind(controller));
 
     return router;
   }

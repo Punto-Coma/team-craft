@@ -15,7 +15,7 @@ export class AppRoutes {
 
     router.use('/users', UserRoutes.routes);
     router.use('/project', ProjectRoutes.routes);
-    router.use('/group', GroupRoutes.routes);
+    router.use('/groups', GroupRoutes.routes);
 
     return router;
   }

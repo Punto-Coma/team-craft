@@ -7,3 +7,4 @@ export { UpdateProjectDTO } from './projects/update-project.dto';
 
 export { CreateGroupDTO } from './groups/create-group.dto';
 export { UpdateGroupDTO } from './groups/update-group.dto';
+export { AddMemberGroupDTO } from './groups/addmember-group.dto';

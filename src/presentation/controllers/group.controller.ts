@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CustomError, ErrorResponse, SuccessResponse } from '../utils';
 import { GroupService } from '../../infrastructure/services';
-import { CreateGroupDTO } from '../../domain/dtos';
+import { AddMemberGroupDTO, CreateGroupDTO } from '../../domain/dtos';
 
 export class GroupController {
   constructor(public readonly groupService: GroupService) {}
@@ -13,8 +13,28 @@ export class GroupController {
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
+  public async AddMember(
+    req: Request<{ groupId: string }, object, AddMemberGroupDTO>,
+    res: Response
+  ) {
+    const { groupId } = req.params;
+
+    this.groupService
+      .AddMember(groupId, req.body.userId)
+      .then((data) => SuccessResponse(res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(error, res));
+  }
+
+  public async GetGroups(req: Request<{ limit: string; page: string }>, res: Response) {
+    const { limit = '10', page = '1' } = req.params;
+
+    this.groupService
+      .Get(+limit, +page)
+      .then((data) => SuccessResponse(res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(error, res));
+  }
+
   private HandleError(error: Error | CustomError, res: Response) {
-    console.log(error);
     if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
 
     console.log(`${error}`);
