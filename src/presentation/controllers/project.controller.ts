@@ -19,7 +19,7 @@ export class ProjectController {
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
-  public async GetProjects(req: Request<object, object, object>, res: Response) {
+  public async GetProjects(req: Request, res: Response) {
     const userId = req.currentUser!.id;
 
     this.projectService
