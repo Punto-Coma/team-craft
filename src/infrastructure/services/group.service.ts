@@ -22,14 +22,14 @@ export class GroupService {
 
   public async AddMember(groupId: string, userId: string) {
     try {
-      const data = await this.groupRepository.Add(userId, groupId);
+      const data = await this.groupRepository.Add(groupId, userId);
       if (!data) return CustomError.BadRequest('Couldnt add member to group, please try again.');
 
       return data;
     } catch (error) {
       if (error instanceof CustomError) throw error;
 
-      throw CustomError.InternalServer('Couldnt create group, please try again.');
+      throw CustomError.InternalServer('Couldnt add member, please try again.');
     }
   }
 

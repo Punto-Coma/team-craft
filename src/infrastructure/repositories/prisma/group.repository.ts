@@ -15,6 +15,7 @@ export class PrismaGroupRepository implements GroupRepository {
   }
 
   async Add(groupId: string, userId: string): Promise<[GroupMembersEntity, UserEntity]> {
+    console.log(groupId, userId);
     return await prisma
       .$transaction([
         prisma.groupMembers.create({
