@@ -11,7 +11,7 @@ export class AuthService {
   public async Create(input: CreateUserDTO) {
     try {
       const emailExists = await this.userRepository.GetByEmail(input.email);
-      if (emailExists) return CustomError.BadRequest('Email already exists.');
+      if (emailExists) throw CustomError.BadRequest('Email already exists.');
 
       const hashedPassword = await Password.GetHashedPassword(input.password);
 
@@ -19,7 +19,7 @@ export class AuthService {
         ...input,
         password: hashedPassword,
       });
-      if (!data) return CustomError.NotFound('Couldnt create user, please try again.');
+      if (!data) throw CustomError.NotFound('Couldnt create user, please try again.');
 
       if ('password' in data) delete data.password;
 
@@ -31,6 +31,8 @@ export class AuthService {
 
       return { token, data };
     } catch (error) {
+      if (error instanceof CustomError) throw error;
+
       throw CustomError.InternalServer('Couldnt create user, please try again.');
     }
   }
@@ -39,12 +41,12 @@ export class AuthService {
     try {
       const data = await this.userRepository.GetByEmail(input.email);
       if (!data)
-        return CustomError.NotFound('Invalid credentials. Please check your email and password.');
+        throw CustomError.NotFound('Invalid credentials. Please check your email and password.');
 
       const verified = await Password.ValidatePassword(input.password, data.password!);
 
       if (!verified)
-        return CustomError.NotFound('Invalid credentials. Please check your email and password.');
+        throw CustomError.NotFound('Invalid credentials. Please check your email and password.');
 
       const token = Password.GetToken({
         email: data.email,
@@ -54,6 +56,8 @@ export class AuthService {
 
       return token;
     } catch (error) {
+      if (error instanceof CustomError) throw error;
+
       throw CustomError.InternalServer('Couldnt login user, please try again.');
     }
   }

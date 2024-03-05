@@ -25,7 +25,7 @@ export class AuthController {
   }
 
   private HandleError(error: Error | CustomError, res: Response) {
-    if (error instanceof CustomError) ErrorResponse(res, error.statusCode, error.message);
+    if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
 
     console.log(`${error}`);
     return ErrorResponse(res, 500, { message: 'Internal server error' });

@@ -13,29 +13,33 @@ export class PrismaProjectRepository implements ProjectRepository {
     });
   }
 
-  async Get(id: string): Promise<ProjectEntity[] | null> {
+  async Get(userId: string): Promise<ProjectEntity[] | null> {
     return prisma.project.findMany({
       orderBy: { id: 'asc' },
-      where: { id },
+      where: { userId },
     });
   }
 
-  async GetById(id: string): Promise<ProjectEntity | null> {
+  async GetById(userId: string, projectId: string): Promise<ProjectEntity | null> {
     return prisma.project.findUnique({
-      where: { id },
+      where: { userId, id: projectId },
     });
   }
 
-  async Update(id: string, data: UpdateProjectDTO): Promise<ProjectEntity | null> {
+  async Update(
+    userId: string,
+    projectId: string,
+    data: UpdateProjectDTO
+  ): Promise<ProjectEntity | null> {
     return prisma.project.update({
-      where: { id },
+      where: { userId, id: projectId },
       data,
     });
   }
 
-  async Delete(id: string): Promise<ProjectEntity | null> {
-    return prisma.project.delete({
-      where: { id },
+  async Delete(userId: string, projectId: string): Promise<ProjectEntity | null> {
+    return await prisma.project.delete({
+      where: { userId, id: projectId },
     });
   }
 }
