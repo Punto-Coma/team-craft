@@ -4,7 +4,7 @@ import { ProjectEntity } from '../entities/project.entity';
 
 export abstract class ProjectRepository {
   abstract Create(data: CreateProjectDTO): Promise<ProjectEntity | null>;
-  abstract Get(id: string): Promise<ProjectEntity[] | null>;
+  abstract Get(): Promise<ProjectEntity[] | null>;
   abstract GetById(userId: string, projectId: string): Promise<ProjectEntity | null>;
   abstract Update(
     userId: string,
@@ -12,4 +12,5 @@ export abstract class ProjectRepository {
     data: UpdateProjectDTO
   ): Promise<ProjectEntity | null>;
   abstract Delete(userId: string, projectId: string): Promise<ProjectEntity | null>;
+  abstract DeleteAll(): Promise<void>;
 }

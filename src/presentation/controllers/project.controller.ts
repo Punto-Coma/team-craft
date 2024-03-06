@@ -20,10 +20,8 @@ export class ProjectController {
   }
 
   public async GetProjects(req: Request, res: Response) {
-    const userId = req.currentUser!.id;
-
     this.projectService
-      .Get(userId)
+      .Get()
       .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }

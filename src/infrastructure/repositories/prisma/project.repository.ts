@@ -13,10 +13,9 @@ export class PrismaProjectRepository implements ProjectRepository {
     });
   }
 
-  async Get(userId: string): Promise<ProjectEntity[] | null> {
+  async Get(): Promise<ProjectEntity[] | null> {
     return prisma.project.findMany({
       orderBy: { id: 'asc' },
-      where: { userId },
     });
   }
 
@@ -41,5 +40,15 @@ export class PrismaProjectRepository implements ProjectRepository {
     return await prisma.project.delete({
       where: { userId, id: projectId },
     });
+  }
+
+  async DeleteAll(): Promise<void> {
+    try {
+      await prisma.project.deleteMany();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await prisma.$disconnect();
+    }
   }
 }

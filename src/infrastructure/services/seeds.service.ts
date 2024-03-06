@@ -1,4 +1,4 @@
-import { CreateProjectDTO, CreateUserDTO } from '../../domain/dtos';
+import { CreateGroupDTO, CreateProjectDTO, CreateUserDTO } from '../../domain/dtos';
 import { faker } from '@faker-js/faker';
 import {
   AuthRepository,
@@ -63,6 +63,60 @@ export class SeedsService {
       if (error instanceof CustomError) throw error;
 
       throw CustomError.InternalServer('Couldnt create projects, please try again.');
+    }
+  }
+
+  public async Groups() {
+    try {
+      const projects = await this.projectRepository.Get();
+      if (!projects) throw CustomError.NotFound('Cannot get projects.');
+
+      for (let i = 0; i < 10; i++) {
+        const group: CreateGroupDTO = {
+          projectId: projects[i].id!,
+          name: faker.company.name(),
+          projectEnds: faker.date.future(),
+        };
+
+        await this.groupRepository.Create(group);
+      }
+
+      return { message: 'Groups created' };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof CustomError) throw error;
+
+      throw CustomError.InternalServer('Couldnt create groups, please try again.');
+    }
+  }
+
+  public async All() {
+    try {
+      await this.CleanData();
+
+      await this.Users();
+      await this.Projects();
+      await this.Groups();
+
+      return { message: 'Data successfully created.' };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof CustomError) throw error;
+
+      throw CustomError.InternalServer('Couldnt run seeder, please try again.');
+    }
+  }
+
+  private async CleanData() {
+    try {
+      await this.groupRepository.DeleteAll();
+      await this.projectRepository.DeleteAll();
+      await this.userRepository.DeleteAll();
+    } catch (error) {
+      console.log(error);
+      if (error instanceof CustomError) throw error;
+
+      throw CustomError.InternalServer('Couldnt delete data, please try again.');
     }
   }
 }

@@ -20,8 +20,10 @@ export class SeedsRoutes {
     );
     const controller = new SeedsController(service);
 
+    router.get('/create-all', controller.CreateAll.bind(controller));
     router.get('/create-users', controller.CreateUsers.bind(controller));
     router.get('/create-projects', controller.CreateProjects.bind(controller));
+    router.get('/create-groups', controller.CreateGroups.bind(controller));
 
     return router;
   }
