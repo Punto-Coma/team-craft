@@ -20,3 +20,14 @@ export class AppRoutes {
     return router;
   }
 }
+
+//  Component schema security
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
+ */

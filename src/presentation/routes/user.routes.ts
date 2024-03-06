@@ -13,6 +13,7 @@ export class UserRoutes {
     const controller = new UserController(service);
 
     router.get('/', requireAuth, controller.GetUsers.bind(controller));
+
     router.get('/:id', requireAuth, controller.GetUser.bind(controller));
 
     router.put(
@@ -26,3 +27,38 @@ export class UserRoutes {
     return router;
   }
 }
+
+/**
+ * @swagger
+ * /api/v1/users:
+ *    get:
+ *        summary: Get all users
+ *        security:
+ *            - bearerAuth: []
+ *        tags:
+ *            - Users
+ *        responses:
+ *            200:
+ *                description: List of users
+ *            500:
+ *                description: Internal server error
+ * /api/v1/users/{id}:
+ *    get:
+ *        summary: Get all users
+ *        security:
+ *            - bearerAuth: []
+ *        tags:
+ *            - Users
+ *        parameters:
+ *            - in: path
+ *              name: id
+ *              required: true
+ *              description: User id
+ *              schema:
+ *                  type: string
+ *        responses:
+ *            200:
+ *                description: List of users
+ *            500:
+ *                description: Internal server error
+ */

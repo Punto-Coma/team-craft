@@ -1,6 +1,8 @@
 import path from 'path';
 import express, { Router } from 'express';
 import http from 'http';
+import { serve, setup } from 'swagger-ui-express';
+import { swaggerSpec } from './swagger';
 
 interface Options {
   port: number;
@@ -32,6 +34,9 @@ export class Server {
 
     //* Routes
     this.app.use('/api/v1', this.routes);
+
+    //* Swagger
+    this.app.use('/api-docs', serve, setup(swaggerSpec));
 
     //* SPA
     this.app.get('*', (req, res) => {
