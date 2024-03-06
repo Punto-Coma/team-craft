@@ -15,4 +15,5 @@ export abstract class GroupRepository {
     data: UpdateGroupDTO
   ): Promise<GroupEntity | null>;
   abstract Delete(userId: string, groupId: string): Promise<GroupEntity | null>;
+  abstract DeleteAll(): Promise<void>;
 }

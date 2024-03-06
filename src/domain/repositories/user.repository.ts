@@ -7,4 +7,5 @@ export abstract class UserRepository {
   abstract GetByEmail(email: string): Promise<UserEntity | null>;
   abstract Update(id: string, data: UpdateUserDTO): Promise<UserEntity | null>;
   abstract Delete(id: string): Promise<UserEntity | null>;
+  abstract DeleteAll(): Promise<void>;
 }
