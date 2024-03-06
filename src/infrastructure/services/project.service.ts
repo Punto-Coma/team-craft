@@ -20,10 +20,10 @@ export class ProjectService {
     }
   }
 
-  public async Get(id: string) {
+  public async Get() {
     try {
-      const data = await this.projectRepository.Get(id);
-      if (!data) return CustomError.NotFound('There is no project for this user.');
+      const data = await this.projectRepository.Get();
+      if (!data) return CustomError.NotFound('There is no projects.');
 
       return data;
     } catch (error) {

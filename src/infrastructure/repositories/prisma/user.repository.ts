@@ -41,4 +41,14 @@ export class PrismaUserRepository implements UserRepository {
       where: { id },
     });
   }
+
+  async DeleteAll(): Promise<void> {
+    try {
+      await prisma.user.deleteMany();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }

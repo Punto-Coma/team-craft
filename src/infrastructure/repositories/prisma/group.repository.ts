@@ -64,4 +64,15 @@ export class PrismaGroupRepository implements GroupRepository {
   Delete(userId: string, projectId: string): Promise<GroupEntity | null> {
     throw new Error('Method not implemented.');
   }
+
+  async DeleteAll(): Promise<void> {
+    try {
+      await prisma.groupMembers.deleteMany();
+      await prisma.group.deleteMany();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }
