@@ -7,10 +7,11 @@ export class UserController {
   constructor(public readonly userService: UserService) {}
 
   public async GetUsers(
-    req: Request<{ limit: string; page: string }, object, object>,
+    req: Request<object, object, object, { limit: string; page: string }>,
     res: Response
   ) {
-    const { limit = '10', page = '1' } = req.params;
+    const { limit = '10', page = '1' } = req.query;
+    console.log(limit, page);
 
     this.userService
       .Get(+limit, +page)
