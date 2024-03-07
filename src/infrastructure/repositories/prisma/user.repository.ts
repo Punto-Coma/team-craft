@@ -28,11 +28,9 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async Update(id: string, userData: UpdateUserDTO): Promise<UserEntity | null> {
-    const { username, email } = userData;
-
     return prisma.user.update({
       where: { id },
-      data: { username, email },
+      data: { ...userData },
     });
   }
 

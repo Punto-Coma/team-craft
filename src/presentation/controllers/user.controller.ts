@@ -27,15 +27,11 @@ export class UserController {
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
-  public async UpdateUser(
-    req: Request<{ projectId: string }, object, UpdateUserDTO>,
-    res: Response
-  ) {
-    const input = req.body;
-    const userId = req.currentUser!.id;
+  public async UpdateUser(req: Request<{ id: string }, object, UpdateUserDTO>, res: Response) {
+    const { id } = req.params;
 
     this.userService
-      .Update(userId, input)
+      .Update(id, req.body)
       .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }

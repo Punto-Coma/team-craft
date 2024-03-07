@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserService } from '../../infrastructure/services';
 import { PrismaUserRepository } from '../../infrastructure/repositories/prisma';
-import { requireAuth, validateInputData } from '../middlewares';
+import { requireAuth, verifyId, validateInputData } from '../middlewares';
 import { getUsersSchema, updateUserSchema } from '../../domain/validators';
 import { UserController } from '../controllers/user.controller';
 
@@ -22,7 +22,7 @@ export class UserRoutes {
 
     router.put(
       '/:id',
-      [requireAuth, validateInputData(updateUserSchema)],
+      [requireAuth, verifyId, validateInputData(updateUserSchema)],
       controller.UpdateUser.bind(controller)
     );
 

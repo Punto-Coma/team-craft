@@ -8,12 +8,12 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   const id = req.currentUser?.id;
 
   try {
-    if (!id) throw ErrorResponse(res, 403, 'Access denied, you need to log in to continue.');
+    if (!id) throw ErrorResponse(res, 401, 'Access denied, you need to log in to continue.');
 
     const userExists = await prisma.user.findUnique({ where: { id } });
 
     if (!userExists)
-      throw ErrorResponse(res, 403, 'Access denied, you need to log in to continue.');
+      throw ErrorResponse(res, 401, 'Access denied, you need to log in to continue.');
 
     if (req.currentUser?.id && id === req.currentUser?.id) {
       return next();
