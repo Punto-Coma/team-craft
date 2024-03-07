@@ -1,10 +1,23 @@
 import { Request, Response } from 'express';
 import { CustomError, ErrorResponse, SuccessResponse } from '../utils';
 import { UserService } from '../../infrastructure/services';
-import { UpdateUserDTO } from '../../domain/dtos';
+import { CreateUserProfileDTO, UpdateUserDTO } from '../../domain/dtos';
 
 export class UserController {
   constructor(public readonly userService: UserService) {}
+
+  public async CreateProfile(
+    req: Request<{ id: string }, object, CreateUserProfileDTO>,
+    res: Response
+  ) {
+    const { id } = req.params;
+    const { userId, ...data } = req.body;
+
+    this.userService
+      .CreateProfile({ userId: userId || id, ...data })
+      .then((data) => SuccessResponse(res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(error, res));
+  }
 
   public async GetUsers(
     req: Request<object, object, object, { limit: string; page: string }>,
@@ -36,11 +49,11 @@ export class UserController {
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
-  public async DeleteUser(req: Request<{ projectId: string }, object, object>, res: Response) {
-    const userId = req.currentUser!.id;
+  public async DeleteUser(req: Request<{ id: string }>, res: Response) {
+    const { id } = req.params;
 
     this.userService
-      .Delete(userId)
+      .Delete(id)
       .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }

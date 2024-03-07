@@ -1,9 +1,22 @@
-import { UpdateUserDTO } from '../../domain/dtos';
+import { CreateUserProfileDTO, UpdateUserDTO } from '../../domain/dtos';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { CustomError } from '../../presentation/utils';
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
+
+  public async CreateProfile(input: CreateUserProfileDTO) {
+    try {
+      const data = await this.userRepository.CreateProfile({
+        ...input,
+      });
+      if (!data) throw CustomError.BadRequest('Couldnt create user profile, please try again.');
+
+      return data;
+    } catch (error) {
+      this.HandleError(error, 'Couldnt create user profile, please try again.');
+    }
+  }
 
   public async Get(limit: number, page: number) {
     try {
@@ -52,7 +65,7 @@ export class UserService {
   public async Delete(userId: string) {
     try {
       const data = await this.userRepository.Delete(userId);
-      if (!data) return CustomError.NotFound('There is no project for this user.');
+      if (!data) return CustomError.NotFound('There is no user whit this id.');
 
       return data;
     } catch (error) {

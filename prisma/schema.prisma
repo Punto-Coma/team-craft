@@ -41,8 +41,8 @@ model UserData {
   user      User     @relation(fields: [userId], references: [id])
   phone     String?
   discord   String?
-  country   String?
-  score     Float?
+  country   String
+  score     Float
   techStack String[]
 }
 
