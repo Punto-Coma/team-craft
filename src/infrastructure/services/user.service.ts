@@ -41,6 +41,8 @@ export class UserService {
       const data = await this.userRepository.Update(userId, input);
       if (!data) return CustomError.NotFound('Couldnt update this user, please try again.');
 
+      if ('password' in data) delete data.password;
+
       return data;
     } catch (error) {
       this.HandleError(error, 'Couldnt update user, please try again.');
