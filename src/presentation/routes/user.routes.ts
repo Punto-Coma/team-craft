@@ -26,7 +26,7 @@ export class UserRoutes {
       controller.UpdateUser.bind(controller)
     );
 
-    router.delete('/:projectId', requireAuth, controller.DeleteUser.bind(controller));
+    router.delete('/:id', requireAuth, controller.DeleteUser.bind(controller));
 
     return router;
   }

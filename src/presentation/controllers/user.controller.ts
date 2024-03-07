@@ -18,11 +18,11 @@ export class UserController {
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }
 
-  public async GetUser(req: Request<{ userId: string }, object, object>, res: Response) {
-    const userId = req.currentUser!.id;
+  public async GetUser(req: Request<{ id: string }>, res: Response) {
+    const { id } = req.params;
 
     this.userService
-      .GetSingle(userId)
+      .GetSingle(id)
       .then((data) => SuccessResponse(res, 200, data))
       .catch((error: Error | CustomError) => this.HandleError(error, res));
   }

@@ -25,7 +25,7 @@ export class UserService {
     try {
       const data = await this.userRepository.GetById(userId);
       if (!data) {
-        throw CustomError.NotFound('There is no user.');
+        throw CustomError.NotFound('There is no user whit this id.');
       }
 
       if ('password' in data) delete data.password;
