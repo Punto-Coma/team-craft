@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { UserService } from '../../infrastructure/services';
 import { PrismaUserRepository } from '../../infrastructure/repositories/prisma';
 import { requireAuth, validateInputData } from '../middlewares';
-import { updateUserSchema } from '../../domain/validators';
+import { getUsersSchema, updateUserSchema } from '../../domain/validators';
 import { UserController } from '../controllers/user.controller';
 
 export class UserRoutes {
@@ -12,7 +12,11 @@ export class UserRoutes {
     const service = new UserService(new PrismaUserRepository());
     const controller = new UserController(service);
 
-    router.get('/', requireAuth, controller.GetUsers.bind(controller));
+    router.get(
+      '/',
+      [requireAuth, validateInputData(undefined, getUsersSchema)],
+      controller.GetUsers.bind(controller)
+    );
 
     router.get('/:id', requireAuth, controller.GetUser.bind(controller));
 

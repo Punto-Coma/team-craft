@@ -11,7 +11,6 @@ export class UserController {
     res: Response
   ) {
     const { limit = '10', page = '1' } = req.query;
-    console.log(limit, page);
 
     this.userService
       .Get(+limit, +page)
@@ -53,7 +52,6 @@ export class UserController {
   private HandleError(error: Error | CustomError, res: Response) {
     if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
 
-    console.log(`${error}`);
     return ErrorResponse(res, 500, { message: 'Internal server error' });
   }
 }

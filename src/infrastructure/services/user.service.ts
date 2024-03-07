@@ -17,9 +17,7 @@ export class UserService {
 
       return sanitizedData;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-      console.log(error);
-      throw CustomError.InternalServer('Couldnt get users, please try again.');
+      this.HandleError(error, 'Could not retrieve users. Please try again.');
     }
   }
 
@@ -34,9 +32,7 @@ export class UserService {
 
       return data;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-
-      throw CustomError.InternalServer('Couldnt get this user, please try again.');
+      this.HandleError(error, 'Could not retrieve user. Please try again.');
     }
   }
 
@@ -47,9 +43,7 @@ export class UserService {
 
       return data;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-
-      throw CustomError.InternalServer('Couldnt update user, please try again.');
+      this.HandleError(error, 'Couldnt update user, please try again.');
     }
   }
 
@@ -60,9 +54,15 @@ export class UserService {
 
       return data;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-
-      throw CustomError.InternalServer('Couldnt delete this user, please try again.');
+      this.HandleError(error, 'Couldnt delete this user, please try again.');
     }
+  }
+
+  private HandleError(error: unknown, errorMessage: string) {
+    console.log(`ERROR [USER_SERVICE]: ${error}`);
+
+    if (error instanceof CustomError) throw error;
+
+    throw CustomError.InternalServer(errorMessage);
   }
 }
