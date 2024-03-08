@@ -1,3 +1,4 @@
+export { logger } from './logger';
 export { CustomError } from './errors';
 export { Password } from './password';
 export { ErrorResponse, SuccessResponse } from './response';

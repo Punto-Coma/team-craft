@@ -11,8 +11,8 @@ export class AuthController {
 
     this.authService
       .Create(input)
-      .then((data) => SuccessResponse(res, 201, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 201, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public LoginUser(req: Request<object, object, LoginUserDTO>, res: Response) {
@@ -20,14 +20,14 @@ export class AuthController {
 
     this.authService
       .Login(input)
-      .then((data) => SuccessResponse(res, 201, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 201, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
-  private HandleError(error: Error | CustomError, res: Response) {
-    if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
+  private HandleError(req: Request<unknown>, error: Error | CustomError, res: Response) {
+    if (error instanceof CustomError)
+      return ErrorResponse(req, res, error.statusCode, error.message);
 
-    console.log(`${error}`);
-    return ErrorResponse(res, 500, { message: 'Internal server error' });
+    return ErrorResponse(req, res, 500, { message: 'Internal server error' });
   }
 }

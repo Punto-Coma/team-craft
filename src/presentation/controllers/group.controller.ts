@@ -9,8 +9,8 @@ export class GroupController {
   public async CreateGroup(req: Request<object, object, CreateGroupDTO>, res: Response) {
     this.groupService
       .Create(req.body)
-      .then((data) => SuccessResponse(res, 201, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 201, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async AddMember(
@@ -21,8 +21,8 @@ export class GroupController {
 
     this.groupService
       .AddMember(groupId, req.body.userId)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async GetGroups(req: Request<{ limit: string; page: string }>, res: Response) {
@@ -30,8 +30,8 @@ export class GroupController {
 
     this.groupService
       .Get(+limit, +page)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async GetGroup(req: Request<{ groupId: string }, object, object>, res: Response) {
@@ -39,14 +39,14 @@ export class GroupController {
 
     this.groupService
       .GetSingle(userId, req.params.groupId)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
-  private HandleError(error: Error | CustomError, res: Response) {
-    if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
+  private HandleError(req: Request<unknown>, error: Error | CustomError, res: Response) {
+    if (error instanceof CustomError)
+      return ErrorResponse(req, res, error.statusCode, error.message);
 
-    console.log(`${error}`);
-    return ErrorResponse(res, 500, { message: 'Internal server error' });
+    return ErrorResponse(req, res, 500, { message: 'Internal server error' });
   }
 }
