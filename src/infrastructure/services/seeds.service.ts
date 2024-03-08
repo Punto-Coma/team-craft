@@ -59,7 +59,6 @@ export class SeedsService {
 
       return { message: 'Projects created' };
     } catch (error) {
-      console.log(error);
       if (error instanceof CustomError) throw error;
 
       throw CustomError.InternalServer('Couldnt create projects, please try again.');
@@ -83,7 +82,6 @@ export class SeedsService {
 
       return { message: 'Groups created' };
     } catch (error) {
-      console.log(error);
       if (error instanceof CustomError) throw error;
 
       throw CustomError.InternalServer('Couldnt create groups, please try again.');
@@ -100,7 +98,6 @@ export class SeedsService {
 
       return { message: 'Data successfully created.' };
     } catch (error) {
-      console.log(error);
       if (error instanceof CustomError) throw error;
 
       throw CustomError.InternalServer('Couldnt run seeder, please try again.');
@@ -113,7 +110,6 @@ export class SeedsService {
       await this.projectRepository.DeleteAll();
       await this.userRepository.DeleteAll();
     } catch (error) {
-      console.log(error);
       if (error instanceof CustomError) throw error;
 
       throw CustomError.InternalServer('Couldnt delete data, please try again.');

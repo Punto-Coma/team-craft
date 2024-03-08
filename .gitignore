@@ -4,3 +4,4 @@ node_modules
 postgres
 postgres-test
 coverage
+logs

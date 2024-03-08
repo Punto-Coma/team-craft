@@ -65,9 +65,7 @@ export class UserService {
   public async Delete(userId: string) {
     try {
       await this.userRepository.Delete(userId);
-      //if (!data) return CustomError.NotFound('There is no user whit this id.');
-      // console.log(data);
-      // return data;
+
       return { message: 'User has been successfully deleted.' };
     } catch (error) {
       this.HandleError(error, 'Couldnt delete this user, please try again.');
@@ -75,8 +73,6 @@ export class UserService {
   }
 
   private HandleError(error: unknown, errorMessage: string) {
-    console.log(`ERROR [USER_SERVICE]: ${error}`);
-
     if (error instanceof CustomError) throw error;
 
     throw CustomError.InternalServer(errorMessage);

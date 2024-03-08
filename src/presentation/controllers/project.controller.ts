@@ -15,15 +15,15 @@ export class ProjectController {
 
     this.projectService
       .Create({ ...input, userId })
-      .then((data) => SuccessResponse(res, 201, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 201, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async GetProjects(req: Request, res: Response) {
     this.projectService
       .Get()
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async GetProject(req: Request<{ projectId: string }, object, object>, res: Response) {
@@ -31,8 +31,8 @@ export class ProjectController {
 
     this.projectService
       .GetSingle(userId, req.params.projectId)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async UpdateProject(
@@ -44,8 +44,8 @@ export class ProjectController {
 
     this.projectService
       .Update(userId, req.params.projectId, input)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
   public async DeleteProject(req: Request<{ projectId: string }, object, object>, res: Response) {
@@ -53,14 +53,14 @@ export class ProjectController {
 
     this.projectService
       .Delete(userId, req.params.projectId)
-      .then((data) => SuccessResponse(res, 200, data))
-      .catch((error: Error | CustomError) => this.HandleError(error, res));
+      .then((data) => SuccessResponse(req, res, 200, data))
+      .catch((error: Error | CustomError) => this.HandleError(req, error, res));
   }
 
-  private HandleError(error: Error | CustomError, res: Response) {
-    if (error instanceof CustomError) return ErrorResponse(res, error.statusCode, error.message);
+  private HandleError(req: Request<unknown>, error: Error | CustomError, res: Response) {
+    if (error instanceof CustomError)
+      return ErrorResponse(req, res, error.statusCode, error.message);
 
-    console.log(`${error}`);
-    return ErrorResponse(res, 500, { message: 'Internal server error' });
+    return ErrorResponse(req, res, 500, { message: 'Internal server error' });
   }
 }

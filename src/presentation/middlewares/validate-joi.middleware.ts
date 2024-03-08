@@ -20,7 +20,8 @@ export function validateInputData<T extends DTO>(
         const errorMessages: string[] = bodyError.details.map((detail) =>
           detail.message.replace(/["\\]/g, '')
         );
-        return ErrorResponse(res, 400, errorMessages);
+
+        return ErrorResponse(req, res, 400, errorMessages);
       }
     }
 
@@ -34,7 +35,8 @@ export function validateInputData<T extends DTO>(
         const queryErrorMessages: string[] = queryError.details.map((detail) =>
           detail.message.replace(/["\\]/g, '')
         );
-        return ErrorResponse(res, 400, queryErrorMessages);
+
+        return ErrorResponse(req, res, 400, queryErrorMessages);
       }
 
       req.query = value as never;
