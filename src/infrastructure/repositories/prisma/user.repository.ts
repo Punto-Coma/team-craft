@@ -39,10 +39,20 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async Delete(id: string): Promise<UserEntity | null> {
-    return prisma.user.delete({
-      where: { id },
-    });
+  async Delete(id: string): Promise<void> {
+    await prisma
+      .$transaction([
+        prisma.groupMembers.deleteMany({
+          where: { userId: id },
+        }),
+        prisma.userData.deleteMany({
+          where: { userId: id },
+        }),
+        prisma.user.delete({
+          where: { id },
+        }),
+      ])
+      .finally(async () => await prisma.$disconnect());
   }
 
   async DeleteAll(): Promise<void> {

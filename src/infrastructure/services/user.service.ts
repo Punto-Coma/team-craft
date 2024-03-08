@@ -64,10 +64,11 @@ export class UserService {
 
   public async Delete(userId: string) {
     try {
-      const data = await this.userRepository.Delete(userId);
-      if (!data) return CustomError.NotFound('There is no user whit this id.');
-
-      return data;
+      await this.userRepository.Delete(userId);
+      //if (!data) return CustomError.NotFound('There is no user whit this id.');
+      // console.log(data);
+      // return data;
+      return { message: 'User has been successfully deleted.' };
     } catch (error) {
       this.HandleError(error, 'Couldnt delete this user, please try again.');
     }
