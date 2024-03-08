@@ -1,11 +1,16 @@
 import { PrismaClient } from '@prisma/client';
 import { UserEntity } from '../../../domain/entities/user.entity';
-import { UpdateUserDTO } from '../../../domain/dtos/users/update-user.dto';
 import { UserRepository } from '../../../domain/repositories/user.repository';
+import { CreateUserProfileDTO, UpdateUserDTO } from '../../../domain/dtos';
+import { UserProfileEntity } from '../../../domain/entities/user_profile.entity';
 
 const prisma = new PrismaClient();
 
 export class PrismaUserRepository implements UserRepository {
+  async CreateProfile(data: CreateUserProfileDTO): Promise<UserProfileEntity | null> {
+    return await prisma.userData.create({ data });
+  }
+
   async Get(limit: number = 10, page: number = 1): Promise<UserEntity[] | null> {
     const offset = (page - 1) * limit;
     return prisma.user.findMany({
@@ -28,18 +33,26 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async Update(id: string, userData: UpdateUserDTO): Promise<UserEntity | null> {
-    const { username, email } = userData;
-
     return prisma.user.update({
       where: { id },
-      data: { username, email },
+      data: { ...userData },
     });
   }
 
-  async Delete(id: string): Promise<UserEntity | null> {
-    return prisma.user.delete({
-      where: { id },
-    });
+  async Delete(id: string): Promise<void> {
+    await prisma
+      .$transaction([
+        prisma.groupMembers.deleteMany({
+          where: { userId: id },
+        }),
+        prisma.userData.deleteMany({
+          where: { userId: id },
+        }),
+        prisma.user.delete({
+          where: { id },
+        }),
+      ])
+      .finally(async () => await prisma.$disconnect());
   }
 
   async DeleteAll(): Promise<void> {

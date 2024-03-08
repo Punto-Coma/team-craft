@@ -1,9 +1,22 @@
-import { UpdateUserDTO } from '../../domain/dtos';
+import { CreateUserProfileDTO, UpdateUserDTO } from '../../domain/dtos';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { CustomError } from '../../presentation/utils';
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
+
+  public async CreateProfile(input: CreateUserProfileDTO) {
+    try {
+      const data = await this.userRepository.CreateProfile({
+        ...input,
+      });
+      if (!data) throw CustomError.BadRequest('Couldnt create user profile, please try again.');
+
+      return data;
+    } catch (error) {
+      this.HandleError(error, 'Couldnt create user profile, please try again.');
+    }
+  }
 
   public async Get(limit: number, page: number) {
     try {
@@ -17,9 +30,7 @@ export class UserService {
 
       return sanitizedData;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-      console.log(error);
-      throw CustomError.InternalServer('Couldnt get users, please try again.');
+      this.HandleError(error, 'Could not retrieve users. Please try again.');
     }
   }
 
@@ -27,16 +38,14 @@ export class UserService {
     try {
       const data = await this.userRepository.GetById(userId);
       if (!data) {
-        throw CustomError.NotFound('There is no user.');
+        throw CustomError.NotFound('There is no user whit this id.');
       }
 
       if ('password' in data) delete data.password;
 
       return data;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-
-      throw CustomError.InternalServer('Couldnt get this user, please try again.');
+      this.HandleError(error, 'Could not retrieve user. Please try again.');
     }
   }
 
@@ -45,24 +54,31 @@ export class UserService {
       const data = await this.userRepository.Update(userId, input);
       if (!data) return CustomError.NotFound('Couldnt update this user, please try again.');
 
+      if ('password' in data) delete data.password;
+
       return data;
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-
-      throw CustomError.InternalServer('Couldnt update user, please try again.');
+      this.HandleError(error, 'Couldnt update user, please try again.');
     }
   }
 
   public async Delete(userId: string) {
     try {
-      const data = await this.userRepository.Delete(userId);
-      if (!data) return CustomError.NotFound('There is no project for this user.');
-
-      return data;
+      await this.userRepository.Delete(userId);
+      //if (!data) return CustomError.NotFound('There is no user whit this id.');
+      // console.log(data);
+      // return data;
+      return { message: 'User has been successfully deleted.' };
     } catch (error) {
-      if (error instanceof CustomError) throw error;
-
-      throw CustomError.InternalServer('Couldnt delete this user, please try again.');
+      this.HandleError(error, 'Couldnt delete this user, please try again.');
     }
+  }
+
+  private HandleError(error: unknown, errorMessage: string) {
+    console.log(`ERROR [USER_SERVICE]: ${error}`);
+
+    if (error instanceof CustomError) throw error;
+
+    throw CustomError.InternalServer(errorMessage);
   }
 }

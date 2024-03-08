@@ -37,12 +37,12 @@ model User {
 
 model UserData {
   id        String   @id @default(cuid())
-  userId    String
+  userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
   phone     String?
   discord   String?
-  country   String?
-  score     Float?
+  country   String
+  score     Float
   techStack String[]
 }
 
