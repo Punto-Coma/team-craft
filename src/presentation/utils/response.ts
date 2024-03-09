@@ -6,9 +6,9 @@ export const ErrorResponse = (
   status: number,
   data: unknown
 ): Response => {
-  if (status === 500) req.logger.fatal({ data, status });
+  if (status === 500) req.logger && req.logger.fatal({ data, status });
 
-  req.logger.warn({ data, status });
+  req.logger && req.logger.warn({ data, status });
 
   return res.status(status).json({
     success: false,
@@ -22,7 +22,7 @@ export const SuccessResponse = (
   status: number,
   data: unknown
 ): Response => {
-  req.logger.info({ data, status });
+  req.logger && req.logger.info({ data, status });
 
   return res.status(status).json({
     success: true,

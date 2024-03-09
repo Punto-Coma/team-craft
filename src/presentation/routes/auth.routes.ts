@@ -30,3 +30,64 @@ export class AuthRoutes {
     return router;
   }
 }
+
+/**
+ * @swagger
+ * /api/v1/auth/signin:
+ *   post:
+ *     summary: Register a new user
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 minLength: 3
+ *                 maxLength: 10
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 8
+ *                 maxLength: 20
+ *                 pattern: "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+ *     responses:
+ *       201:
+ *         description: User successfully created.
+ *       400:
+ *         description: This user cannot be created.
+ *       500:
+ *         description: Internal server error.
+ * /api/v1/auth/login:
+ *   post:
+ *     summary: Login
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 8
+ *                 maxLength: 20
+ *     responses:
+ *       201:
+ *         description: User token.
+ *       404:
+ *         description: Invalid credentials.
+ *       500:
+ *         description: Internal server error.
+ */
