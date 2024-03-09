@@ -6,10 +6,9 @@ export const ErrorResponse = (
   status: number,
   data: unknown
 ): Response => {
-  console.log(data);
   if (status === 500) req.logger && req.logger.fatal({ data, status });
 
-  req.logger.warn({ data, status });
+  req.logger && req.logger.warn({ data, status });
 
   return res.status(status).json({
     success: false,
