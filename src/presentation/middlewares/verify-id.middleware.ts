@@ -7,6 +7,7 @@ export async function verifyId(req: Request<{ id: string }>, res: Response, next
 
   if (idToken !== idParams)
     return ErrorResponse(
+      req,
       res,
       403,
       'The entered id is incorrect, verify you are logged in correctly.'
