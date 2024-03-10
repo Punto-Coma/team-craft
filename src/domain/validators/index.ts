@@ -4,3 +4,5 @@ export { createUserSchema } from './auth/create-user.schema';
 export { loginUserSchema } from './auth/login-user.schema';
 export { updateUserSchema } from './users/update-user.schema';
 export { projectSchema } from './projects/create-project.schema';
+export { groupSchema } from './groups/create-group.schema';
+export { addMemberGroupSchema } from './groups/addmember-group.schema';
