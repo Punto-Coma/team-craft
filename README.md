@@ -45,7 +45,7 @@ Run docker compose
 Run prisma
 
 ```bash
-  prisma generate
+  npx prisma generate
 ```
 
 Start the server
